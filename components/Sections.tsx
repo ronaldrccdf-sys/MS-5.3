@@ -160,52 +160,50 @@ export const PracticeAreas = ({ onSelectArea }: { onSelectArea: (area: string) =
   );
 };
 
-/* --- NEW SECTION: PRACTICE NEWS (BLUE/STREAMING/CENTURY) --- */
+/* --- NEW SECTION: PRACTICE NEWS (SOURCE LOGOS & LINKS) --- */
 export const PracticeNews = ({ area, onClose }: { area: string, onClose: () => void }) => {
-  const [news, setNews] = useState<NewsItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
-
-  useEffect(() => {
-    setLoading(true);
-    setNews([]);
-    GeminiLegalService.getPracticeNewsStream(area, (updatedNews) => {
-      // Updates one-by-one as the stream grows
-      setNews(updatedNews);
-      if (updatedNews.length > 0) setLoading(false);
-    }).finally(() => {
-      setLoading(false);
-    });
-  }, [area]);
-
-  const handleShare = async (item: NewsItem, index: number) => {
-    const shareText = `${item.headline}\nFonte: ${item.source}\nLink: ${item.link}`;
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: item.headline,
-          text: shareText,
-          url: item.link
-        });
-      } catch (err) {
-        console.error("Share failed", err);
-      }
-    } else {
-      navigator.clipboard.writeText(shareText);
-      setCopiedIndex(index);
-      setTimeout(() => setCopiedIndex(null), 2000);
-    }
+  const { t } = useLanguage();
+  
+  const sourceMapping: Record<string, { name: string, logo: string, url: string }[]> = {
+    'Empresarial': [
+      { name: 'Valor Econômico', logo: 'https://valor.globo.com/favicon.ico', url: 'https://valor.globo.com/' },
+      { name: 'Brazil Journal', logo: 'https://braziljournal.com/favicon.ico', url: 'https://braziljournal.com/' }
+    ],
+    'Contencioso / Tribunais Superiores': [
+      { name: 'JOTA', logo: 'https://www.jota.info/favicon.ico', url: 'https://www.jota.info/' },
+      { name: 'ConJur', logo: 'https://www.conjur.com.br/favicon.ico', url: 'https://www.conjur.com.br/' }
+    ],
+    'Tributário': [
+      { name: 'JOTA', logo: 'https://www.jota.info/favicon.ico', url: 'https://www.jota.info/' },
+      { name: 'Valor Econômico', logo: 'https://valor.globo.com/favicon.ico', url: 'https://valor.globo.com/' }
+    ],
+    'Energia': [
+      { name: 'CanalEnergia', logo: 'https://www.canalenergia.com.br/favicon.ico', url: 'https://www.canalenergia.com.br/' },
+      { name: 'MegaWhat', logo: 'https://megawhat.energy/favicon.ico', url: 'https://megawhat.energy/' }
+    ],
+    'Óleo & Gás': [
+      { name: 'Eixos', logo: 'https://eixos.com.br/favicon.ico', url: 'https://eixos.com.br/' },
+      { name: 'Petronotícias', logo: 'https://petronoticias.com.br/favicon.ico', url: 'https://petronoticias.com.br/' }
+    ],
+    'Mineração': [
+      { name: 'Brasil Mineral', logo: 'https://www.brasilmineral.com.br/favicon.ico', url: 'https://www.brasilmineral.com.br/' },
+      { name: 'Notícias de Mineração', logo: 'https://www.noticiasdemineracao.com/favicon.ico', url: 'https://www.noticiasdemineracao.com/' }
+    ]
   };
+
+  const sources = sourceMapping[area] || [
+    { name: 'Valor Econômico', logo: 'https://valor.globo.com/favicon.ico', url: 'https://valor.globo.com/' },
+    { name: 'JOTA', logo: 'https://www.jota.info/favicon.ico', url: 'https://www.jota.info/' }
+  ];
 
   return (
     <section className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 md:p-8 animate-fade-in font-century">
-      <div className="bg-white w-full max-w-5xl h-full max-h-[90vh] rounded-sm shadow-2xl overflow-hidden flex flex-col">
-        {/* Header - Marking in BLUE */}
+      <div className="bg-white w-full max-w-3xl rounded-sm shadow-2xl overflow-hidden flex flex-col">
         <header className="px-8 py-6 border-b-4 border-legalBlue-500 bg-white flex justify-between items-center shrink-0">
           <div className="flex items-center gap-4">
             <Newspaper className="text-legalBlue-500 w-8 h-8" />
             <div>
-              <h2 className="text-2xl font-century font-bold text-gray-900 tracking-tight">Notícias Recentes — {area}</h2>
+              <h2 className="text-2xl font-century font-bold text-gray-900 tracking-tight">Veículos de Referência — {area}</h2>
             </div>
           </div>
           <button 
@@ -216,89 +214,38 @@ export const PracticeNews = ({ area, onClose }: { area: string, onClose: () => v
           </button>
         </header>
 
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto px-8 py-10 bg-gray-50/30">
-          {loading && news.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center space-y-6 opacity-80">
-              <Loader2 className="w-12 h-12 animate-spin text-legalBlue-500" />
-              <div className="text-center space-y-4 max-w-md">
-                <p className="font-century font-bold text-gray-800 text-lg tracking-tight">Sincronizando com veículos globais...</p>
-                <div className="bg-legalBlue-500/10 p-5 rounded border border-legalBlue-500/20 shadow-sm">
-                   <p className="text-xs text-legalBlue-700 font-bold uppercase tracking-widest flex items-center justify-center gap-2 mb-2">
-                     <AlertCircle size={14}/> Aviso de Sistema
-                   </p>
-                   <p className="text-[13px] text-gray-700 leading-snug font-medium">
-                     O carregamento pode levar até <strong>1 minuto</strong>.
-                   </p>
+        <div className="px-8 py-12 bg-gray-50/30">
+          <p className="text-gray-600 text-sm mb-10 text-center font-medium uppercase tracking-widest">
+            Selecione um veículo para acessar as notícias do dia
+          </p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {sources.map((source, idx) => (
+              <a 
+                key={idx}
+                href={source.url}
+                target="_blank"
+                rel="noreferrer"
+                className="group bg-white p-8 border border-gray-100 hover:border-legalBlue-500 transition-all duration-300 shadow-sm hover:shadow-md flex flex-col items-center justify-center gap-4 rounded-sm text-center"
+              >
+                <div className="w-16 h-16 flex items-center justify-center bg-gray-50 rounded-full group-hover:bg-legalBlue-50 transition-colors">
+                  <img src={source.logo} alt={source.name} className="w-8 h-8 object-contain grayscale group-hover:grayscale-0 transition-all" />
                 </div>
-                <p className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Monitorando fontes de prestígio em tempo real.</p>
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-6">
-              {news.map((item, idx) => (
-                <div 
-                  key={idx} 
-                  className="group bg-white border-l-4 border-legalBlue-500 p-6 shadow-sm hover:shadow-md transition-all duration-300 animate-fade-in-up"
-                  style={{ animationDelay: `${idx * 0.05}s` }}
-                >
-                  <div className="flex justify-between items-start gap-6">
-                    <div className="space-y-4 flex-1">
-                      <div className="flex items-center gap-3">
-                         <span className="text-[10px] font-bold text-legalBlue-500 uppercase tracking-widest bg-legalBlue-500/5 px-2 py-1 rounded">
-                           {item.source}
-                         </span>
-                         <span className="text-[10px] text-gray-400 font-mono">#{idx + 1}</span>
-                      </div>
-                      
-                      <h3 className="text-lg md:text-xl font-century font-bold text-gray-900 group-hover:text-legalBlue-500 transition-colors leading-snug">
-                        {item.headline}
-                      </h3>
-                      
-                      <div className="flex items-center gap-4 pt-2">
-                        <a 
-                          href={item.link} 
-                          target="_blank" 
-                          rel="noreferrer" 
-                          className="inline-flex items-center gap-2 text-[10px] font-bold text-white bg-legalBlue-500 hover:bg-legalBlue-600 px-4 py-2 rounded transition-all shadow-sm"
-                        >
-                          LER MATÉRIA COMPLETA <ExternalLink size={12} />
-                        </a>
-                        
-                        <button 
-                          onClick={() => handleShare(item, idx)}
-                          className={`inline-flex items-center gap-2 text-[10px] font-bold px-4 py-2 rounded border transition-all ${
-                            copiedIndex === idx 
-                            ? 'bg-green-500 border-green-500 text-white' 
-                            : 'bg-white border-gray-200 text-gray-500 hover:border-legalBlue-500 hover:text-legalBlue-500'
-                          }`}
-                        >
-                          {copiedIndex === idx ? <Check size={12}/> : <Share2 size={12}/>}
-                          {copiedIndex === idx ? 'COPIADO' : 'COMPARTILHAR'}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
+                <h3 className="font-century font-bold text-lg text-gray-800 group-hover:text-legalBlue-600">
+                  {source.name}
+                </h3>
+                <span className="text-[10px] font-bold text-legalBlue-500 uppercase tracking-widest">
+                  Acessar Portal <ExternalLink size={10} className="inline ml-1" />
+                </span>
+              </a>
+            ))}
+          </div>
 
-              {loading && news.length > 0 && (
-                <div className="flex flex-col items-center justify-center py-6 gap-3 text-gray-400">
-                  <div className="flex items-center gap-3">
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    <span className="text-[10px] font-bold uppercase tracking-widest">Carregando próximas notícias...</span>
-                  </div>
-                </div>
-              )}
-
-              <div className="bg-legalBlue-500/5 p-8 rounded border border-legalBlue-500/10 mt-12">
-                 <p className="text-[11px] text-gray-500 text-center leading-relaxed font-century">
-                   <strong className="text-legalBlue-500">AVISO LEGAL:</strong> As notícias acima são provenientes de veículos jornalísticos independentes e consolidados. 
-                   O escritório Marques & Serra atua como curador e não possui vínculo editorial com os conteúdos externos, prezando exclusivamente pela transparência e informação estratégica de seus clientes.
-                 </p>
-              </div>
-            </div>
-          )}
+          <div className="bg-legalBlue-500/5 p-8 rounded border border-legalBlue-500/10 mt-12">
+             <p className="text-[11px] text-gray-500 text-center leading-relaxed font-century">
+               <strong className="text-legalBlue-500">CURADORIA ESTRATÉGICA:</strong> O escritório Marques & Serra atua como curador de informações, direcionando nossos clientes aos principais veículos de prestígio para monitoramento em tempo real de cada setor.
+             </p>
+          </div>
         </div>
       </div>
     </section>

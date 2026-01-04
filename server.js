@@ -26,78 +26,8 @@ const AREA_SOURCES = {
 };
 
 app.get('/api/news', async (req, res) => {
-  const { area } = req.query;
-  console.log(`Request received for area: ${area}`);
-  
-  if (!area) {
-    return res.status(400).json({ error: 'Area is required' });
-  }
-
-  if (!SERPER_API_KEY) {
-    console.error('SERPER_API_KEY not configured');
-    return res.status(500).json({ error: 'Search API key not configured' });
-  }
-
-  try {
-    // Strictly target news published in the last 24 hours
-    const searchQuery = `"${area}" (site:valor.globo.com OR site:jota.info OR site:conjur.com.br OR site:braziljournal.com OR site:canalenergia.com.br OR site:megawhat.energy OR site:petronoticias.com.br OR site:eixos.com.br OR site:brasilmineral.com.br OR site:exame.com OR site:ft.com OR site:estadao.com.br OR site:folha.uol.com.br)`;
-    
-    console.log(`Searching Serper for TODAY's news with query: ${searchQuery}`);
-
-    const response = await axios.post('https://google.serper.dev/search', {
-      q: searchQuery,
-      gl: 'br',
-      hl: 'pt-br',
-      tbm: 'nws', 
-      num: 10,
-      tbs: 'qdr:d' // Strictly last 24 hours (Today)
-    }, {
-      headers: {
-        'X-API-KEY': SERPER_API_KEY,
-        'Content-Type': 'application/json'
-      }
-    });
-
-    let newsResults = [];
-    
-    // Serper's News results are usually specific articles with headlines
-    if (response.data.news && response.data.news.length > 0) {
-      newsResults = response.data.news.map(item => ({
-        headline: item.title,
-        source: item.source || 'Veículo Especializado',
-        link: item.link,
-        date: item.date
-      }));
-    } else {
-      // Fallback: If no "news" tab results, search organic but with specific article patterns
-      const fallbackResponse = await axios.post('https://google.serper.dev/search', {
-        q: `${area} (intitle:notícia OR intitle:decisão OR intitle:análise) site:(valor.globo.com OR jota.info OR conjur.com.br)`,
-        gl: 'br',
-        hl: 'pt-br',
-        num: 5
-      }, {
-        headers: {
-          'X-API-KEY': SERPER_API_KEY,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (fallbackResponse.data.organic) {
-        newsResults = fallbackResponse.data.organic.map(item => ({
-          headline: item.title,
-          source: item.source || (new URL(item.link).hostname.replace('www.', '')),
-          link: item.link,
-          date: item.date || 'Recente'
-        }));
-      }
-    }
-
-    console.log(`Returning ${newsResults.length} news items`);
-    res.json(newsResults);
-  } catch (error) {
-    console.error('Error fetching news:', error.response?.data || error.message);
-    res.status(500).json({ error: 'Failed to fetch real-time news' });
-  }
+  // Disabling backend news fetching as requested
+  res.json([]);
 });
 
 app.listen(PORT, () => {
