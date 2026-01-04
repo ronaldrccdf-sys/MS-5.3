@@ -39,19 +39,18 @@ app.get('/api/news', async (req, res) => {
   }
 
   try {
-    // Constructing a more aggressive query to find specific NEWS ARTICLES, not just homepages
-    // We add terms like "notícia", "artigo", "análise" and specifically target the news tab results
-    const searchQuery = `${area} notícia (site:valor.globo.com OR site:jota.info OR site:conjur.com.br OR site:braziljournal.com OR site:canalenergia.com.br OR site:megawhat.energy OR site:petronoticias.com.br OR site:eixos.com.br OR site:brasilmineral.com.br OR site:exame.com OR site:ft.com OR site:estadao.com.br OR site:folha.uol.com.br)`;
+    // Strictly target news published in the last 24 hours
+    const searchQuery = `"${area}" (site:valor.globo.com OR site:jota.info OR site:conjur.com.br OR site:braziljournal.com OR site:canalenergia.com.br OR site:megawhat.energy OR site:petronoticias.com.br OR site:eixos.com.br OR site:brasilmineral.com.br OR site:exame.com OR site:ft.com OR site:estadao.com.br OR site:folha.uol.com.br)`;
     
-    console.log(`Searching Serper with query: ${searchQuery}`);
+    console.log(`Searching Serper for TODAY's news with query: ${searchQuery}`);
 
     const response = await axios.post('https://google.serper.dev/search', {
       q: searchQuery,
       gl: 'br',
       hl: 'pt-br',
-      tbm: 'nws', // Sticking to news for headlines
+      tbm: 'nws', 
       num: 10,
-      tbs: 'qdr:m' // Last month only to ensure fresh articles
+      tbs: 'qdr:d' // Strictly last 24 hours (Today)
     }, {
       headers: {
         'X-API-KEY': SERPER_API_KEY,
