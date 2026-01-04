@@ -117,7 +117,9 @@ export const GeminiLegalService = {
    */
   getPracticeNewsStream: async (area: string, onUpdate: (news: NewsItem[]) => void) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/news?area=${encodeURIComponent(area)}`);
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      const baseUrl = isLocal ? 'http://localhost:3001' : window.location.origin;
+      const response = await fetch(`${baseUrl}/api/news?area=${encodeURIComponent(area)}`);
       if (!response.ok) throw new Error('Failed to fetch news');
       const data = await response.json();
       onUpdate(data);
