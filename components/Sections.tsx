@@ -206,7 +206,6 @@ export const PracticeNews = ({ area, onClose }: { area: string, onClose: () => v
             <Newspaper className="text-legalBlue-500 w-8 h-8" />
             <div>
               <h2 className="text-2xl font-century font-bold text-gray-900 tracking-tight">Notícias Recentes — {area}</h2>
-              <p className="text-[10px] uppercase tracking-widest text-legalBlue-500 font-bold">Curadoria Jurídica Estratégica (Tempo Real)</p>
             </div>
           </div>
           <button 

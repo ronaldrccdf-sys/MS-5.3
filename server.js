@@ -49,15 +49,14 @@ app.get('/api/news', async (req, res) => {
   }
 
   try {
-    const searchQuery = `site:(${sourcesQuery}) "${area}"`;
+    const searchQuery = `"${area}" (site:valor.globo.com OR site:jota.info OR site:conjur.com.br OR site:braziljournal.com OR site:canalenergia.com.br OR site:megawhat.energy OR site:petronoticias.com.br OR site:eixos.com.br OR site:brasilmineral.com.br OR site:exame.com OR site:ft.com OR site:estadao.com.br OR site:folha.uol.com.br)`;
     console.log(`Searching Serper with query: ${searchQuery}`);
 
     const response = await axios.post('https://google.serper.dev/search', {
       q: searchQuery,
       gl: 'br',
       hl: 'pt-br',
-      tbm: 'nws', // News search
-      num: 8
+      num: 10
     }, {
       headers: {
         'X-API-KEY': SERPER_API_KEY,
@@ -65,16 +64,23 @@ app.get('/api/news', async (req, res) => {
       }
     });
 
-    const newsResults = (response.data.news || []).map(item => ({
-      headline: item.title,
-      source: item.source || 'Notícia',
-      link: item.link,
-      date: item.date
-    }));
+    console.log('Serper response data:', JSON.stringify(response.data).substring(0, 500));
 
-    if (newsResults.length === 0 && response.data.organic) {
-       // Fallback to organic if no news tab results
-       response.data.organic.slice(0, 5).forEach(item => {
+    const newsResults = [];
+    
+    if (response.data.news && response.data.news.length > 0) {
+      response.data.news.forEach(item => {
+        newsResults.push({
+          headline: item.title,
+          source: item.source || 'Notícia',
+          link: item.link,
+          date: item.date
+        });
+      });
+    }
+    
+    if (newsResults.length < 5 && response.data.organic) {
+       response.data.organic.forEach(item => {
          newsResults.push({
            headline: item.title,
            source: item.source || new URL(item.link).hostname,
@@ -84,7 +90,8 @@ app.get('/api/news', async (req, res) => {
        });
     }
 
-    res.json(newsResults);
+    console.log(`Returning ${newsResults.length} news items`);
+    res.json(newsResults.slice(0, 10));
   } catch (error) {
     console.error('Error fetching news from Serper:', error.response?.data || error.message);
     res.status(500).json({ error: 'Failed to fetch real-time news' });
