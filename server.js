@@ -9,7 +9,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 const AREA_SOURCES = {
   'EMPRESARIAL': ['Valor Econômico', 'Brazil Journal', 'Exame', 'Financial Times'],
@@ -26,6 +26,7 @@ const AREA_SOURCES = {
 
 app.get('/api/news', async (req, res) => {
   const { area } = req.query;
+  console.log(`Request received for area: ${area}`);
   if (!area) {
     return res.status(400).json({ error: 'Area is required' });
   }
