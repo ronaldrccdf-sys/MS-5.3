@@ -116,64 +116,13 @@ export const GeminiLegalService = {
    * CURADORIA DE NOTÍCIAS POR ÁREA (STREAMING) - HOJE APENAS
    */
   getPracticeNewsStream: async (area: string, onUpdate: (news: NewsItem[]) => void) => {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-    const today = new Date().toLocaleDateString('pt-BR');
     try {
-      const prompt = `Você é o Curador de Inteligência Jurídica do escritório Marques & Serra. 
-      Sua missão é buscar e reportar as 10 principais notícias REAIS publicadas EXCLUSIVAMENTE hoje (${today}) na área de: ${area}.
-
-      REGRAS CRÍTICAS PARA EVITAR LINKS QUEBRADOS (404) E NOTÍCIAS FALSAS:
-      1. SÓ use links de notícias publicadas no dia de HOJE (${today}). 
-      2. VERIFIQUE rigorosamente cada link via Google Search. Se o link não levar diretamente à matéria ativa de hoje, NÃO inclua.
-      3. NUNCA invente manchetes. Se não houver 10 notícias reais de hoje, traga apenas as que existirem (mesmo que seja apenas uma).
-      4. Use APENAS veículos de alta credibilidade:
-         - Valor Econômico, JOTA, ConJur, Brazil Journal, Estadão, Folha de S.Paulo, CanalEnergia, MegaWhat, Petronotícias.
-      5. Responda IMEDIATAMENTE conforme encontrar cada item, retornando um JSON array de objetos { headline, source, link }.`;
-
-      const result = await ai.models.generateContentStream({
-        model: 'gemini-3-pro-preview', // Pro is better at search verification
-        contents: prompt,
-        config: {
-          tools: [{ googleSearch: {} }],
-          responseMimeType: "application/json",
-          responseSchema: {
-            type: Type.ARRAY,
-            items: {
-              type: Type.OBJECT,
-              properties: {
-                headline: { type: Type.STRING },
-                source: { type: Type.STRING },
-                link: { type: Type.STRING },
-              },
-              required: ["headline", "source", "link"],
-            }
-          }
-        },
-      });
-
-      let fullContent = "";
-      for await (const chunk of result) {
-        fullContent += chunk.text || "";
-        try {
-          const cleaned = fullContent.trim();
-          // Logic to update partial arrays for "one-by-one" feel
-          if (cleaned.startsWith("[") && cleaned.endsWith("]")) {
-            const parsed = JSON.parse(cleaned);
-            onUpdate(parsed);
-          } else if (cleaned.startsWith("[")) {
-            const lastIndex = cleaned.lastIndexOf("}");
-            if (lastIndex !== -1) {
-              const partial = cleaned.substring(0, lastIndex + 1) + "]";
-              const parsed = JSON.parse(partial);
-              onUpdate(parsed);
-            }
-          }
-        } catch (e) {
-          // Catch incomplete JSON parsing
-        }
-      }
+      const response = await fetch(`http://localhost:3001/api/news?area=${encodeURIComponent(area)}`);
+      if (!response.ok) throw new Error('Failed to fetch news');
+      const data = await response.json();
+      onUpdate(data);
     } catch (error) {
-      console.error("Streaming error:", error);
+      console.error("News fetch error:", error);
     }
   }
 };
