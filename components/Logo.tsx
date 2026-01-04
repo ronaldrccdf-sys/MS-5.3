@@ -7,8 +7,8 @@ const LOGO_URL = "/assets/firm-logo.jpg";
 export const Logo = ({ 
   className = "h-12", 
   showText = false, 
-  textSize = "text-2xl md:text-3xl", // Aumentado o tamanho padrão
-  subtitleSize = "text-[0.6rem] md:text-[0.7rem]", // Aumentado proporcionalmente
+  textSize = "text-2xl md:text-3xl",
+  subtitleSize = "text-[0.6rem] md:text-[0.7rem]",
   id = "main" 
 }: { 
   className?: string, 
@@ -17,44 +17,14 @@ export const Logo = ({
   subtitleSize?: string,
   id?: string 
 }) => {
-  const [imgError, setImgError] = useState(false);
-
   return (
     <div className={`flex items-center gap-4 ${className}`}>
-      {/* Symbol Container - Fundo transparente */}
       <div className="relative aspect-square h-full flex items-center justify-center">
-        {!imgError ? (
-            <img 
-                src={LOGO_URL} 
-                alt="Logo Marques & Serra" 
-                className="w-full h-full object-contain"
-                onError={() => setImgError(true)}
-            />
-        ) : (
-            /* Fallback para SVG se a imagem falhar */
-            <svg viewBox="0 0 100 100" className="w-full h-full p-1" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#D4AF37" />
-                  <stop offset="50%" stopColor="#F4E285" />
-                  <stop offset="100%" stopColor="#C9A44C" />
-                </linearGradient>
-              </defs>
-              <circle cx="50" cy="50" r="46" fill="none" stroke="url(#goldGradient)" strokeWidth="0.5" opacity="0.5" />
-              <text 
-                x="50" 
-                y="65" 
-                fontFamily="Cinzel, serif" 
-                fontSize="40" 
-                fill="url(#goldGradient)" 
-                textAnchor="middle" 
-                fontWeight="bold"
-                letterSpacing="-1"
-              >
-                M&amp;S
-              </text>
-            </svg>
-        )}
+        <img 
+          src={LOGO_URL} 
+          alt="Logo Marques & Serra" 
+          className="w-full h-full object-contain mix-blend-screen"
+        />
       </div>
       
       {showText && (
@@ -68,36 +38,14 @@ export const Logo = ({
 };
 
 export const LogoDark = ({ className = "h-12" }: { className?: string }) => {
-    const [imgError, setImgError] = useState(false);
-
     return (
       <div className={`flex items-center gap-3 ${className}`}>
-        {/* Symbol Container - Fundo transparente */}
         <div className="relative aspect-square h-full flex items-center justify-center">
-            {!imgError ? (
-                <img 
-                    src={LOGO_URL} 
-                    alt="Logo Marques & Serra" 
-                    className="w-full h-full object-contain"
-                    onError={() => setImgError(true)}
-                />
-            ) : (
-                <svg viewBox="0 0 100 100" className="w-full h-full p-1" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="50" cy="50" r="46" fill="none" stroke="#C9A44C" strokeWidth="0.5" opacity="0.5" />
-                    <text 
-                      x="50" 
-                      y="65" 
-                      fontFamily="Cinzel, serif" 
-                      fontSize="40" 
-                      fill="#1a1a1a" 
-                      textAnchor="middle" 
-                      fontWeight="bold"
-                      letterSpacing="-1"
-                    >
-                      M&amp;S
-                    </text>
-                </svg>
-            )}
+          <img 
+            src={LOGO_URL} 
+            alt="Logo Marques & Serra" 
+            className="w-full h-full object-contain mix-blend-screen"
+          />
         </div>
       </div>
     );

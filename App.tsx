@@ -9,7 +9,7 @@ import { Menu, X, Lock, MessageCircle } from 'lucide-react';
 import { LanguageProvider, useLanguage } from './components/LanguageContext';
 
 // URL da Logo para animação
-const LOGO_URL = "https://lh3.googleusercontent.com/d/1JRdyc9wmAc3m6oL-SC4kvy_uThOmzF8v";
+const LOGO_URL = "/assets/firm-logo.jpg";
 
 const AppContent = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -65,13 +65,13 @@ const AppContent = () => {
                 <img 
                   src={LOGO_URL} 
                   alt="Logo Left" 
-                  className="absolute w-full h-full object-contain animate-intro-m"
+                  className="absolute w-full h-full object-contain animate-intro-m mix-blend-screen"
                   style={{ clipPath: 'inset(0 50% 0 0)' }}
                 />
                 <img 
                   src={LOGO_URL} 
                   alt="Logo Right" 
-                  className="absolute w-full h-full object-contain animate-intro-s"
+                  className="absolute w-full h-full object-contain animate-intro-s mix-blend-screen"
                   style={{ clipPath: 'inset(0 0 0 50%)' }}
                 />
              </div>
@@ -98,35 +98,35 @@ const AppContent = () => {
                    </a>
                 ))}
                 
-                {/* Clean white flag-only language buttons */}
-                <div className="flex items-center gap-2 border-l border-white/20 pl-6 ml-2">
+                {/* Language flags selector */}
+                <div className="flex items-center gap-4 border-l border-white/20 pl-6 ml-2">
                    <button 
                     onClick={() => setLanguage('pt')} 
                     title="Português"
-                    className={`w-10 h-10 rounded-full text-xl transition-all duration-300 flex items-center justify-center ${language === 'pt' ? 'bg-white shadow-[0_0_15px_rgba(255,255,255,0.4)] scale-110' : 'opacity-40 grayscale hover:grayscale-0 hover:opacity-100 hover:scale-110'}`}
+                    className={`flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${language === 'pt' ? 'text-gold-500 scale-110' : 'text-white/40 hover:text-white hover:scale-105'}`}
                    >
-                    🇧🇷
+                    <span className="text-xl">🇧🇷</span> PT
                    </button>
                    <button 
                     onClick={() => setLanguage('en')} 
                     title="English"
-                    className={`w-10 h-10 rounded-full text-xl transition-all duration-300 flex items-center justify-center ${language === 'en' ? 'bg-white shadow-[0_0_15px_rgba(255,255,255,0.4)] scale-110' : 'opacity-40 grayscale hover:grayscale-0 hover:opacity-100 hover:scale-110'}`}
+                    className={`flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${language === 'en' ? 'text-gold-500 scale-110' : 'text-white/40 hover:text-white hover:scale-105'}`}
                    >
-                    🇺🇸
+                    <span className="text-xl">🇺🇸</span> EN
                    </button>
                    <button 
                     onClick={() => setLanguage('es')} 
                     title="Español"
-                    className={`w-10 h-10 rounded-full text-xl transition-all duration-300 flex items-center justify-center ${language === 'es' ? 'bg-white shadow-[0_0_15px_rgba(255,255,255,0.4)] scale-110' : 'opacity-40 grayscale hover:grayscale-0 hover:opacity-100 hover:scale-110'}`}
+                    className={`flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${language === 'es' ? 'text-gold-500 scale-110' : 'text-white/40 hover:text-white hover:scale-105'}`}
                    >
-                    🇪🇸
+                    <span className="text-xl">🇪🇸</span> ES
                    </button>
                    <button 
                     onClick={() => setLanguage('zh')} 
                     title="Chinese"
-                    className={`w-10 h-10 rounded-full text-xl transition-all duration-300 flex items-center justify-center ${language === 'zh' ? 'bg-white shadow-[0_0_15px_rgba(255,255,255,0.4)] scale-110' : 'opacity-40 grayscale hover:grayscale-0 hover:opacity-100 hover:scale-110'}`}
+                    className={`flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${language === 'zh' ? 'text-gold-500 scale-110' : 'text-white/40 hover:text-white hover:scale-105'}`}
                    >
-                    🇨🇳
+                    <span className="text-xl">🇨🇳</span> ZH
                    </button>
                 </div>
 
