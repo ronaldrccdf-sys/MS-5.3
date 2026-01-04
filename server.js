@@ -10,66 +10,87 @@ app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT || 3001;
+const SERPER_API_KEY = process.env.SERPER_API_KEY;
 
 const AREA_SOURCES = {
-  'EMPRESARIAL': ['Valor Econômico', 'Brazil Journal', 'Exame', 'Financial Times'],
-  'GOVERNANÇA': ['Valor Econômico', 'Brazil Journal', 'Exame', 'Financial Times'],
-  'MERCADO': ['Valor Econômico', 'Brazil Journal', 'Exame', 'Financial Times'],
-  'CONTENCIOSO': ['JOTA', 'ConJur', 'Estadão', 'Folha de S.Paulo'],
-  'TRIBUNAIS SUPERIORES': ['JOTA', 'ConJur', 'Estadão', 'Folha de S.Paulo'],
-  'TRIBUTÁRIO': ['JOTA', 'Valor Econômico', 'ConJur', 'Estadão'],
-  'ENERGIA': ['CanalEnergia', 'MegaWhat', 'Valor Econômico', 'Eixos'],
-  'ÓLEO & GÁS': ['Eixos', 'Petronotícias', 'Valor Econômico', 'Upstream Online'],
-  'MINERAÇÃO': ['Brasil Mineral', 'Mining Journal', 'Valor Econômico', 'Agência Infra'],
-  'DEFAULT': ['Valor Econômico', 'JOTA', 'ConJur', 'G1', 'Estadão']
+  'EMPRESARIAL': 'Valor Econômico OR Brazil Journal OR Exame OR Financial Times',
+  'GOVERNANÇA': 'Valor Econômico OR Brazil Journal OR Exame OR Financial Times',
+  'MERCADO': 'Valor Econômico OR Brazil Journal OR Exame OR Financial Times',
+  'CONTENCIOSO': 'JOTA OR ConJur OR Estadão OR Folha de S.Paulo',
+  'TRIBUNAIS SUPERIORES': 'JOTA OR ConJur OR Estadão OR Folha de S.Paulo',
+  'TRIBUTÁRIO': 'JOTA Tributos CARF OR Valor Econômico Tributos OR ConJur Tributário',
+  'ENERGIA': 'CanalEnergia OR MegaWhat OR Valor Econômico Energia OR Eixos Energia',
+  'ÓLEO & GÁS': 'Eixos Óleo Gás OR Petronotícias OR Valor Econômico Petróleo OR Upstream Online',
+  'MINERAÇÃO': 'Brasil Mineral OR Mining Journal OR Valor Econômico Mineração OR Agência Infra Mineração',
+  'DEFAULT': 'Valor Econômico OR JOTA OR ConJur OR G1 OR Estadão'
 };
 
 app.get('/api/news', async (req, res) => {
   const { area } = req.query;
   console.log(`Request received for area: ${area}`);
+  
   if (!area) {
     return res.status(400).json({ error: 'Area is required' });
   }
 
+  if (!SERPER_API_KEY) {
+    console.error('SERPER_API_KEY not configured');
+    return res.status(500).json({ error: 'Search API key not configured' });
+  }
+
   const upperArea = area.toString().toUpperCase();
-  let selectedSources = AREA_SOURCES['DEFAULT'];
+  let sourcesQuery = AREA_SOURCES['DEFAULT'];
   
   for (const key in AREA_SOURCES) {
     if (upperArea.includes(key)) {
-      selectedSources = AREA_SOURCES[key];
+      sourcesQuery = AREA_SOURCES[key];
       break;
     }
   }
 
   try {
-    // In a production environment with an API key, we would use Serper.dev or Google Search API here.
-    // To ensure zero latency and specific curatorship as requested, we provide high-quality curated links.
-    const curatedNews = selectedSources.map(source => {
-      let link = "https://www.google.com";
-      if (source === 'Valor Econômico') link = "https://valor.globo.com";
-      if (source === 'JOTA') link = "https://www.jota.info";
-      if (source === 'ConJur') link = "https://www.conjur.com.br";
-      if (source === 'Brazil Journal') link = "https://braziljournal.com";
-      if (source === 'CanalEnergia') link = "https://www.canalenergia.com.br";
-      if (source === 'MegaWhat') link = "https://megawhat.energy";
-      if (source === 'Petronotícias') link = "https://petronoticias.com.br";
-      if (source === 'Eixos') link = "https://eixos.com.br";
-      if (source === 'Brasil Mineral') link = "https://www.brasilmineral.com.br";
-      
-      return {
-        headline: `Acompanhe as últimas atualizações de ${area} no ${source}`,
-        source: source,
-        link: link
-      };
+    const searchQuery = `site:(${sourcesQuery}) "${area}"`;
+    console.log(`Searching Serper with query: ${searchQuery}`);
+
+    const response = await axios.post('https://google.serper.dev/search', {
+      q: searchQuery,
+      gl: 'br',
+      hl: 'pt-br',
+      tbm: 'nws', // News search
+      num: 8
+    }, {
+      headers: {
+        'X-API-KEY': SERPER_API_KEY,
+        'Content-Type': 'application/json'
+      }
     });
 
-    res.json(curatedNews);
+    const newsResults = (response.data.news || []).map(item => ({
+      headline: item.title,
+      source: item.source || 'Notícia',
+      link: item.link,
+      date: item.date
+    }));
+
+    if (newsResults.length === 0 && response.data.organic) {
+       // Fallback to organic if no news tab results
+       response.data.organic.slice(0, 5).forEach(item => {
+         newsResults.push({
+           headline: item.title,
+           source: item.source || new URL(item.link).hostname,
+           link: item.link,
+           date: item.date || 'Recente'
+         });
+       });
+    }
+
+    res.json(newsResults);
   } catch (error) {
-    console.error('Error fetching news:', error);
-    res.status(500).json({ error: 'Failed to fetch news' });
+    console.error('Error fetching news from Serper:', error.response?.data || error.message);
+    res.status(500).json({ error: 'Failed to fetch real-time news' });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`Backend news server running on http://localhost:${PORT}`);
+  console.log(`Backend news server running on port ${PORT}`);
 });
