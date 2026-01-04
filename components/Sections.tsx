@@ -529,12 +529,19 @@ export const Team = () => {
                <img src={selectedMember.img} className="absolute inset-0 w-full h-full object-cover" alt={selectedMember.name} />
                <div className="absolute inset-0 bg-gold-500/10"></div>
             </div>
-            <div className="w-full md:w-2/3 p-8 md:p-10 overflow-y-auto">
-               <h3 className="text-3xl font-serif text-gray-900 mb-6">{selectedMember.name}</h3>
-               <div className="text-gray-600 font-light leading-relaxed text-sm space-y-4 text-justify">
-                 {selectedMember.bio.split('\n\n').map((paragraph: string, idx: number) => (
-                    <p key={idx}>{paragraph}</p>
-                 ))}
+            <div className="w-full md:w-2/3 p-8 md:p-12 overflow-y-auto">
+               <div className="flex flex-col md:flex-row items-center gap-8 border-b border-gray-100 pb-8 mb-8">
+                  <div className="w-32 h-32 rounded-full overflow-hidden shrink-0 border-2 border-gold-500/20 shadow-lg">
+                    <img src={selectedMember.img} alt={selectedMember.name} className="w-full h-full object-cover grayscale" />
+                  </div>
+                  <div className="text-center md:text-left">
+                    <h3 className="text-3xl font-serif text-gray-900 leading-tight">{selectedMember.name}</h3>
+                    <p className="text-gold-600 uppercase tracking-[0.2em] text-xs font-bold mt-2">{t('team.partner')}</p>
+                  </div>
+               </div>
+               
+               <div className="text-gray-600 font-light leading-relaxed text-sm space-y-6 text-justify whitespace-pre-line">
+                 {selectedMember.bio}
                </div>
             </div>
           </div>

@@ -80,8 +80,8 @@ const AppContent = () => {
 
        {/* Navbar */}
        <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'bg-black/90 backdrop-blur-md py-3 shadow-lg' : 'bg-transparent py-6'}`}>
-          <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
-             <a href="#home" className={`relative z-50 transition-opacity duration-1000 ${introFinished ? 'opacity-100' : 'opacity-0'}`}>
+          <div className="mx-auto px-4 md:px-8 flex items-center justify-between w-full max-w-[100vw]">
+             <a href="#home" className={`relative z-50 transition-opacity duration-1000 -ml-4 ${introFinished ? 'opacity-100' : 'opacity-0'}`}>
                 <Logo className={`transition-all duration-300 ${isScrolled ? 'h-10' : 'h-14'}`} /> 
              </a>
              
@@ -103,30 +103,30 @@ const AppContent = () => {
                    <button 
                     onClick={() => setLanguage('pt')} 
                     title="Português"
-                    className={`flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${language === 'pt' ? 'text-gold-500 scale-110' : 'text-white/40 hover:text-white hover:scale-105'}`}
+                    className={`flex items-center transition-all duration-300 ${language === 'pt' ? 'scale-125 brightness-110' : 'opacity-40 grayscale hover:grayscale-0 hover:opacity-100 hover:scale-110'}`}
                    >
-                    <span className="text-xl">🇧🇷</span> PT
+                    <span className="text-2xl">🇧🇷</span>
                    </button>
                    <button 
                     onClick={() => setLanguage('en')} 
                     title="English"
-                    className={`flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${language === 'en' ? 'text-gold-500 scale-110' : 'text-white/40 hover:text-white hover:scale-105'}`}
+                    className={`flex items-center transition-all duration-300 ${language === 'en' ? 'scale-125 brightness-110' : 'opacity-40 grayscale hover:grayscale-0 hover:opacity-100 hover:scale-110'}`}
                    >
-                    <span className="text-xl">🇺🇸</span> EN
+                    <span className="text-2xl">🇺🇸</span>
                    </button>
                    <button 
                     onClick={() => setLanguage('es')} 
                     title="Español"
-                    className={`flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${language === 'es' ? 'text-gold-500 scale-110' : 'text-white/40 hover:text-white hover:scale-105'}`}
+                    className={`flex items-center transition-all duration-300 ${language === 'es' ? 'scale-125 brightness-110' : 'opacity-40 grayscale hover:grayscale-0 hover:opacity-100 hover:scale-110'}`}
                    >
-                    <span className="text-xl">🇪🇸</span> ES
+                    <span className="text-2xl">🇪🇸</span>
                    </button>
                    <button 
                     onClick={() => setLanguage('zh')} 
                     title="Chinese"
-                    className={`flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${language === 'zh' ? 'text-gold-500 scale-110' : 'text-white/40 hover:text-white hover:scale-105'}`}
+                    className={`flex items-center transition-all duration-300 ${language === 'zh' ? 'scale-125 brightness-110' : 'opacity-40 grayscale hover:grayscale-0 hover:opacity-100 hover:scale-110'}`}
                    >
-                    <span className="text-xl">🇨🇳</span> ZH
+                    <span className="text-2xl">🇨🇳</span>
                    </button>
                 </div>
 
