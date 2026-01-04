@@ -172,7 +172,7 @@ export const Hero = () => {
 
             <div className="absolute inset-0 z-30 container mx-auto px-6 md:px-12 flex flex-col justify-center items-start">
               <div className="max-w-2xl text-left animate-fade-in-up pt-12 md:pt-0">
-                <h1 className="text-5xl md:text-7xl font-medium font-serif text-white mb-4 drop-shadow-md leading-none tracking-wide">
+                <h1 className="text-5xl md:text-7xl font-medium font-serif text-white mb-4 drop-shadow-md leading-none tracking-wide" style={ { fontFamily: "'Cormorant Garamond', serif" } }>
                   {slide.title}
                 </h1>
 
