@@ -166,28 +166,40 @@ export const PracticeNews = ({ area, onClose }: { area: string, onClose: () => v
   
   const sourceMapping: Record<string, { name: string, logo: string, url: string }[]> = {
     'Empresarial': [
-      { name: 'Valor Econômico', logo: 'https://valor.globo.com/favicon.ico', url: 'https://valor.globo.com/' },
-      { name: 'Brazil Journal', logo: 'https://braziljournal.com/favicon.ico', url: 'https://braziljournal.com/' }
+      { name: 'Valor Econômico', logo: 'https://www.google.com/s2/favicons?sz=128&domain=valor.globo.com', url: 'https://valor.globo.com/' },
+      { name: 'Brazil Journal', logo: 'https://www.google.com/s2/favicons?sz=128&domain=braziljournal.com', url: 'https://braziljournal.com/' },
+      { name: 'Exame', logo: 'https://www.google.com/s2/favicons?sz=128&domain=exame.com', url: 'https://exame.com/' },
+      { name: 'Financial Times', logo: 'https://www.google.com/s2/favicons?sz=128&domain=ft.com', url: 'https://www.ft.com/' }
     ],
     'Contencioso / Tribunais Superiores': [
-      { name: 'JOTA', logo: 'https://www.jota.info/favicon.ico', url: 'https://www.jota.info/' },
-      { name: 'ConJur', logo: 'https://www.conjur.com.br/favicon.ico', url: 'https://www.conjur.com.br/' }
+      { name: 'JOTA', logo: 'https://www.google.com/s2/favicons?sz=128&domain=jota.info', url: 'https://www.jota.info/' },
+      { name: 'ConJur', logo: 'https://www.google.com/s2/favicons?sz=128&domain=conjur.com.br', url: 'https://www.conjur.com.br/' },
+      { name: 'Estadão', logo: 'https://www.google.com/s2/favicons?sz=128&domain=estadao.com.br', url: 'https://www.estadao.com.br/politica/' },
+      { name: 'Folha de S.Paulo', logo: 'https://www.google.com/s2/favicons?sz=128&domain=folha.uol.com.br', url: 'https://www1.folha.uol.com.br/poder/' }
     ],
     'Tributário': [
-      { name: 'JOTA', logo: 'https://www.jota.info/favicon.ico', url: 'https://www.jota.info/' },
-      { name: 'Valor Econômico', logo: 'https://valor.globo.com/favicon.ico', url: 'https://valor.globo.com/' }
+      { name: 'JOTA (Tributos)', logo: 'https://www.google.com/s2/favicons?sz=128&domain=jota.info', url: 'https://www.jota.info/tributos' },
+      { name: 'Valor Econômico', logo: 'https://www.google.com/s2/favicons?sz=128&domain=valor.globo.com', url: 'https://valor.globo.com/brasil/macro/tributos/' },
+      { name: 'ConJur', logo: 'https://www.google.com/s2/favicons?sz=128&domain=conjur.com.br', url: 'https://www.conjur.com.br/secao/tributario/' },
+      { name: 'Estadão', logo: 'https://www.google.com/s2/favicons?sz=128&domain=estadao.com.br', url: 'https://www.estadao.com.br/economia/' }
     ],
     'Energia': [
-      { name: 'CanalEnergia', logo: 'https://www.canalenergia.com.br/favicon.ico', url: 'https://www.canalenergia.com.br/' },
-      { name: 'MegaWhat', logo: 'https://megawhat.energy/favicon.ico', url: 'https://megawhat.energy/' }
+      { name: 'CanalEnergia', logo: 'https://www.google.com/s2/favicons?sz=128&domain=canalenergia.com.br', url: 'https://www.canalenergia.com.br/' },
+      { name: 'MegaWhat', logo: 'https://www.google.com/s2/favicons?sz=128&domain=megawhat.energy', url: 'https://megawhat.energy/' },
+      { name: 'Valor Econômico', logo: 'https://www.google.com/s2/favicons?sz=128&domain=valor.globo.com', url: 'https://valor.globo.com/empresas/energia/' },
+      { name: 'Eixos', logo: 'https://www.google.com/s2/favicons?sz=128&domain=eixos.com.br', url: 'https://eixos.com.br/' }
     ],
     'Óleo & Gás': [
-      { name: 'Eixos', logo: 'https://eixos.com.br/favicon.ico', url: 'https://eixos.com.br/' },
-      { name: 'Petronotícias', logo: 'https://petronoticias.com.br/favicon.ico', url: 'https://petronoticias.com.br/' }
+      { name: 'Eixos', logo: 'https://www.google.com/s2/favicons?sz=128&domain=eixos.com.br', url: 'https://eixos.com.br/' },
+      { name: 'Petronotícias', logo: 'https://www.google.com/s2/favicons?sz=128&domain=petronoticias.com.br', url: 'https://petronoticias.com.br/' },
+      { name: 'Valor Econômico', logo: 'https://www.google.com/s2/favicons?sz=128&domain=valor.globo.com', url: 'https://valor.globo.com/empresas/petroleo/' },
+      { name: 'Petróleo Hoje', logo: 'https://www.google.com/s2/favicons?sz=128&domain=petroleohoje.editorabrasilenergia.com.br', url: 'https://petroleohoje.editorabrasilenergia.com.br/' }
     ],
     'Mineração': [
-      { name: 'Brasil Mineral', logo: 'https://www.brasilmineral.com.br/favicon.ico', url: 'https://www.brasilmineral.com.br/' },
-      { name: 'Notícias de Mineração', logo: 'https://www.noticiasdemineracao.com/favicon.ico', url: 'https://www.noticiasdemineracao.com/' }
+      { name: 'Brasil Mineral', logo: 'https://www.google.com/s2/favicons?sz=128&domain=brasilmineral.com.br', url: 'https://www.brasilmineral.com.br/' },
+      { name: 'Notícias de Mineração', logo: 'https://www.google.com/s2/favicons?sz=128&domain=noticiasdemineracao.com', url: 'https://www.noticiasdemineracao.com/' },
+      { name: 'Valor Econômico', logo: 'https://www.google.com/s2/favicons?sz=128&domain=valor.globo.com', url: 'https://valor.globo.com/empresas/mineracao/' },
+      { name: 'Agência Infra', logo: 'https://www.google.com/s2/favicons?sz=128&domain=agenciainfra.com', url: 'https://agenciainfra.com/' }
     ]
   };
 
@@ -228,8 +240,15 @@ export const PracticeNews = ({ area, onClose }: { area: string, onClose: () => v
                 rel="noreferrer"
                 className="group bg-white p-8 border border-gray-100 hover:border-legalBlue-500 transition-all duration-300 shadow-sm hover:shadow-md flex flex-col items-center justify-center gap-4 rounded-sm text-center"
               >
-                <div className="w-16 h-16 flex items-center justify-center bg-gray-50 rounded-full group-hover:bg-legalBlue-50 transition-colors">
-                  <img src={source.logo} alt={source.name} className="w-8 h-8 object-contain grayscale group-hover:grayscale-0 transition-all" />
+                <div className="w-16 h-16 flex items-center justify-center bg-gray-50 rounded-full group-hover:bg-legalBlue-50 transition-colors overflow-hidden border border-gray-100">
+                  <img 
+                    src={source.logo} 
+                    alt={source.name} 
+                    className="w-10 h-10 object-contain grayscale group-hover:grayscale-0 transition-all transform group-hover:scale-110" 
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://www.google.com/s2/favicons?sz=128&domain=google.com';
+                    }}
+                  />
                 </div>
                 <h3 className="font-century font-bold text-lg text-gray-800 group-hover:text-legalBlue-600">
                   {source.name}
