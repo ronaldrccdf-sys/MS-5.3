@@ -113,18 +113,10 @@ export const GeminiLegalService = {
   },
 
   /**
-   * CURADORIA DE NOTÍCIAS POR ÁREA (STREAMING) - HOJE APENAS
+   * CURADORIA DE NOTÍCIAS POR ÁREA
    */
   getPracticeNewsStream: async (area: string, onUpdate: (news: NewsItem[]) => void) => {
-    try {
-      // For local development on Replit, the backend is on port 3001.
-      // We use the relative path if the proxy handles it, but typically we need the full URL or localhost for internal calls.
-      const response = await fetch(`/api/news?area=${encodeURIComponent(area)}`);
-      if (!response.ok) throw new Error('Failed to fetch news');
-      const data = await response.json();
-      onUpdate(data);
-    } catch (error) {
-      console.error("News fetch error:", error);
-    }
+    // This method is now handled via static links in the UI to portals
+    onUpdate([]);
   }
 };
