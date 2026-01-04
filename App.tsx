@@ -99,34 +99,34 @@ const AppContent = () => {
                 ))}
                 
                 {/* Language flags selector */}
-                <div className="flex items-center gap-4 border-l border-white/20 pl-6 ml-2">
+                <div className="flex items-center gap-2 border-l border-white/20 pl-4 ml-2">
                    <button 
                     onClick={() => setLanguage('pt')} 
                     title="Português"
-                    className={`flex items-center transition-all duration-300 ${language === 'pt' ? 'scale-125 brightness-110' : 'opacity-40 grayscale hover:grayscale-0 hover:opacity-100 hover:scale-110'}`}
+                    className={`flex items-center transition-all duration-300 ${language === 'pt' ? 'scale-110 brightness-110' : 'opacity-40 grayscale hover:grayscale-0 hover:opacity-100 hover:scale-105'}`}
                    >
-                    <span className="text-2xl">🇧🇷</span>
+                    <span className="text-lg">🇧🇷</span>
                    </button>
                    <button 
                     onClick={() => setLanguage('en')} 
                     title="English"
-                    className={`flex items-center transition-all duration-300 ${language === 'en' ? 'scale-125 brightness-110' : 'opacity-40 grayscale hover:grayscale-0 hover:opacity-100 hover:scale-110'}`}
+                    className={`flex items-center transition-all duration-300 ${language === 'en' ? 'scale-110 brightness-110' : 'opacity-40 grayscale hover:grayscale-0 hover:opacity-100 hover:scale-105'}`}
                    >
-                    <span className="text-2xl">🇺🇸</span>
+                    <span className="text-lg">🇺🇸</span>
                    </button>
                    <button 
                     onClick={() => setLanguage('es')} 
                     title="Español"
-                    className={`flex items-center transition-all duration-300 ${language === 'es' ? 'scale-125 brightness-110' : 'opacity-40 grayscale hover:grayscale-0 hover:opacity-100 hover:scale-110'}`}
+                    className={`flex items-center transition-all duration-300 ${language === 'es' ? 'scale-110 brightness-110' : 'opacity-40 grayscale hover:grayscale-0 hover:opacity-100 hover:scale-105'}`}
                    >
-                    <span className="text-2xl">🇪🇸</span>
+                    <span className="text-lg">🇪🇸</span>
                    </button>
                    <button 
                     onClick={() => setLanguage('zh')} 
                     title="Chinese"
-                    className={`flex items-center transition-all duration-300 ${language === 'zh' ? 'scale-125 brightness-110' : 'opacity-40 grayscale hover:grayscale-0 hover:opacity-100 hover:scale-110'}`}
+                    className={`flex items-center transition-all duration-300 ${language === 'zh' ? 'scale-110 brightness-110' : 'opacity-40 grayscale hover:grayscale-0 hover:opacity-100 hover:scale-105'}`}
                    >
-                    <span className="text-2xl">🇨🇳</span>
+                    <span className="text-lg">🇨🇳</span>
                    </button>
                 </div>
 

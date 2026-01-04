@@ -554,6 +554,18 @@ export const Team = () => {
 /* --- SECTION 8: CONTACT --- */
 export const Contact = () => {
   const { t } = useLanguage();
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const name = (form.elements.namedItem('name') as HTMLInputElement).value;
+    const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+    const subject = (form.elements.namedItem('subject') as HTMLSelectElement).value;
+    const message = (form.elements.namedItem('message') as HTMLTextAreaElement).value;
+    
+    const mailtoLink = `mailto:contato@marqueseserra.adv.br?subject=${encodeURIComponent(subject + " - " + name)}&body=${encodeURIComponent("Nome: " + name + "\nE-mail: " + email + "\n\n" + message)}`;
+    window.location.href = mailtoLink;
+  };
+
   return (
     <section id="contato" className="bg-[#0a0a0a] text-white py-24 relative overflow-hidden scroll-mt-20">
       <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#C9A44C 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
@@ -590,20 +602,20 @@ export const Contact = () => {
             </div>
           </div>
           <div className="lg:w-1/2 bg-white/5 backdrop-blur-sm p-8 md:p-12 border border-white/10">
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-xs uppercase tracking-widest text-gray-400">{t('contact.form_name')}</label>
-                  <input type="text" className="w-full bg-transparent border-b border-gray-600 py-2 text-white focus:border-gold-500 outline-none transition-colors" />
+                  <input name="name" type="text" required className="w-full bg-transparent border-b border-gray-600 py-2 text-white focus:border-gold-500 outline-none transition-colors" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs uppercase tracking-widest text-gray-400">{t('contact.form_email')}</label>
-                  <input type="email" className="w-full bg-transparent border-b border-gray-600 py-2 text-white focus:border-gold-500 outline-none transition-colors" />
+                  <input name="email" type="email" required className="w-full bg-transparent border-b border-gray-600 py-2 text-white focus:border-gold-500 outline-none transition-colors" />
                 </div>
               </div>
               <div className="space-y-2">
                 <label className="text-xs uppercase tracking-widest text-gray-400">{t('contact.form_subject')}</label>
-                <select className="w-full bg-transparent border-b border-gray-600 py-2 text-white focus:border-gold-500 outline-none transition-colors">
+                <select name="subject" className="w-full bg-transparent border-b border-gray-600 py-2 text-white focus:border-gold-500 outline-none transition-colors">
                   <option className="bg-black text-gray-300">Consulta Jurídica</option>
                   <option className="bg-black text-gray-300">Assessoria Empresarial</option>
                   <option className="bg-black text-gray-300">Parcerias</option>
@@ -612,9 +624,9 @@ export const Contact = () => {
               </div>
               <div className="space-y-2">
                 <label className="text-xs uppercase tracking-widest text-gray-400">{t('contact.form_msg')}</label>
-                <textarea rows={4} className="w-full bg-transparent border-b border-gray-600 py-2 text-white focus:border-gold-500 outline-none transition-colors resize-none"></textarea>
+                <textarea name="message" rows={4} required className="w-full bg-transparent border-b border-gray-600 py-2 text-white focus:border-gold-500 outline-none transition-colors resize-none"></textarea>
               </div>
-              <button className="px-8 py-3 bg-gold-500 text-black font-bold text-xs uppercase tracking-[0.2em] hover:bg-white transition-all duration-300 w-full md:w-auto">
+              <button type="submit" className="px-8 py-3 bg-gold-500 text-black font-bold text-xs uppercase tracking-[0.2em] hover:bg-white transition-all duration-300 w-full md:w-auto">
                 {t('contact.btn_send')}
               </button>
             </form>
