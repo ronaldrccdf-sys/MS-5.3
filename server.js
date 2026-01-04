@@ -56,6 +56,7 @@ app.get('/api/news', async (req, res) => {
       q: searchQuery,
       gl: 'br',
       hl: 'pt-br',
+      tbm: 'nws',
       num: 10
     }, {
       headers: {
@@ -64,30 +65,27 @@ app.get('/api/news', async (req, res) => {
       }
     });
 
-    console.log('Serper response data:', JSON.stringify(response.data).substring(0, 500));
+    console.log('Serper response data received');
 
-    const newsResults = [];
+    let newsResults = [];
     
     if (response.data.news && response.data.news.length > 0) {
-      response.data.news.forEach(item => {
-        newsResults.push({
-          headline: item.title,
-          source: item.source || 'Notícia',
-          link: item.link,
-          date: item.date
-        });
-      });
+      newsResults = response.data.news.map(item => ({
+        headline: item.title,
+        source: item.source || 'Notícia',
+        link: item.link,
+        date: item.date
+      }));
     }
     
-    if (newsResults.length < 5 && response.data.organic) {
-       response.data.organic.forEach(item => {
-         newsResults.push({
-           headline: item.title,
-           source: item.source || new URL(item.link).hostname,
-           link: item.link,
-           date: item.date || 'Recente'
-         });
-       });
+    if (newsResults.length < 3 && response.data.organic) {
+       const organicResults = response.data.organic.map(item => ({
+         headline: item.title,
+         source: item.source || (new URL(item.link).hostname),
+         link: item.link,
+         date: item.date || 'Recente'
+       }));
+       newsResults = [...newsResults, ...organicResults];
     }
 
     console.log(`Returning ${newsResults.length} news items`);
