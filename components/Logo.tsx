@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
 
-// Link atualizado para a nova imagem do Google Drive
-const LOGO_URL = "https://lh3.googleusercontent.com/d/1JRdyc9wmAc3m6oL-SC4kvy_uThOmzF8v";
+// Logo oficial atualizado
+const LOGO_URL = "/assets/firm-logo.jpg";
 
 export const Logo = ({ 
   className = "h-12", 

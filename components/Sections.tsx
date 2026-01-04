@@ -468,7 +468,7 @@ export const Team = () => {
     },
     {
       name: "Ronald Serra",
-      img: "https://lh3.googleusercontent.com/d/1L0mwxnH-sDJ_qwdLN03Z2Nv5f_uAV9jc",
+      img: "/assets/ronald-serra.jpg",
       bio: t('team.bio_ronald'),
     },
   ];
